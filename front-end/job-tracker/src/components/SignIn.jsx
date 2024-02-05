@@ -19,7 +19,6 @@ export default function SignIn() {
                 email: username,
                 password: password
             })
-            console.log(response)
             let token = response.data.token;
             localStorage.setItem("token", token)
             setLoggedIn(true)

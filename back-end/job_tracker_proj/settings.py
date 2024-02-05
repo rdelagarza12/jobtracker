@@ -28,15 +28,16 @@ SECRET_KEY = env.get('DJANGO_KEY')
 TOKEN_COOKIE_NAME = 'token'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # Add the origin of your frontend application
 ]
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = [""]
 
 # Application definition
 
