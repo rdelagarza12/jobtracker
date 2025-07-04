@@ -2,7 +2,11 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["3.145.156.111"]
+ALLOWED_HOSTS = [
+    "3.145.156.111",
+    "127.0.0.1",
+]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://3.145.156.111",
