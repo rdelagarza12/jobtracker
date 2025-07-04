@@ -16,6 +16,8 @@ from rest_framework.status import (
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -38,6 +40,7 @@ class Master_Sign_Up(APIView):
 
 class Sign_Up(APIView):
     def post(self, request):
+        logger.info(f"Signup request data: {request.data}")
         email = request.data.get("email")
         password = request.data.get("password")
         # Input validation
