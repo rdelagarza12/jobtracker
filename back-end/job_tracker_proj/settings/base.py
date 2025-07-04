@@ -38,6 +38,21 @@ CSRF_TRUSTED_ORIGINS  = config("DJANGO_CSRF_TRUSTED_ORIGINS", default="").split(
 TOKEN_COOKIE_NAME = "token"
 
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
+
 
 # Application definition
 
