@@ -10,6 +10,8 @@ from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_404_NOT_FOUND,
     HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
@@ -35,19 +37,44 @@ class Master_Sign_Up(APIView):
         return Response
 
 class Sign_Up(APIView):
-
     def post(self, request):
-        username = request.data.get("email")
-        new_user = User.objects.create_user(username, username, request.data.get("password"))
-        new_user_library = TrackerLibrary(user=new_user)
-        token = Token.objects.create(user=new_user)
-        new_user.save()
-        new_user_library.save()
-        response = JsonResponse(
-            {"user" : new_user.email, 'token' : token.key}, status=HTTP_201_CREATED
-        )
-        response.set_cookie(key='token', value=token.key, httponly=True)
-        return response
+        email = request.data.get("email")
+        password = request.data.get("password")
+        # Input validation
+        if not email or not password:
+            return Response(
+                {"error": "Email and password are required."},
+                status=HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Check if user already exists
+            if User.objects.filter(username=email).exists():
+                return Response(
+                    {"error": "A user with this email already exists."},
+                    status=HTTP_400_BAD_REQUEST
+                )
+            # Create user
+            new_user = User.objects.create_user(username=email, email=email, password=password)
+            token = Token.objects.create(user=new_user)
+
+            # Create library for user
+            TrackerLibrary.objects.create(user=new_user)
+
+            # Return success response
+            response = JsonResponse(
+                {"user": new_user.email, "token": token.key},
+                status=HTTP_201_CREATED
+            )
+            response.set_cookie(key='token', value=token.key, httponly=True)
+            return response
+
+        except Exception as e:
+            print("Signup error:", e)  # Log to console
+            return Response(
+                {"error": "Something went wrong during sign-up.", "details": str(e)},
+                status=HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
 class Log_In(APIView):
 

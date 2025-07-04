@@ -22,6 +22,7 @@ export default function SignUp() {
             setLoggedIn(true);
             navigate('profile');
         } catch (error) {
+            console.log(error, "hello")
             window.alert('The Username or Password is either taken or it is invalid')
         }
 

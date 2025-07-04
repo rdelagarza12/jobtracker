@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 from dotenv import dotenv_values
 from corsheaders.middleware import CorsMiddleware
 
@@ -22,22 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# ------------------------------------------------------------------------------
+# Core security & env
+# ------------------------------------------------------------------------------
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.get('DJANGO_KEY')
-TOKEN_COOKIE_NAME = 'token'
+SECRET_KEY = config("DJANGO_KEY")
+DEBUG      = config("DJANGO_DEBUG", default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # Add the origin of your frontend application
-]
+CORS_ALLOWED_ORIGINS  = config("DJANGO_CORS_ALLOWED_ORIGINS",  default="").split(",")
+CSRF_TRUSTED_ORIGINS  = config("DJANGO_CSRF_TRUSTED_ORIGINS", default="").split(",")
+
+TOKEN_COOKIE_NAME = "token"
 
 
-ALLOWED_HOSTS = ["3.145.156.111"]
-
-CSRF_TRUSTED_ORIGINS = [""]
 
 # Application definition
 
