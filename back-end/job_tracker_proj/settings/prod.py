@@ -4,7 +4,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     "3.145.156.111",
-    "127.0.0.1",
 ]
 
 
